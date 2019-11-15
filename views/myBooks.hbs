@@ -1,0 +1,30 @@
+<h2>Мої книжки</h2>
+{{#if data.length}}
+    {{#each data}}
+        <div class="row">
+          <div class="col s4 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="{{image}}">
+              </div>
+              <div class="card-content">
+                <span class="card-title">{{title}}</span>  
+                <p>{{authors}}</p>
+                <p>{{year}}</p>
+                <p>{{desc}}</p>
+              </div>
+              <div class="btnBooks"> 
+              <form action="/mybook/remove" method="post">
+                <input type="hidden" name="id" value="{{_id}}">
+                <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                <button class="btn">Видалити</button>
+              </form>
+              <a href="/mybook/change/{{_id}}" class="btn">Змінити</a>
+            </div>
+            </div>
+          </div>
+        </div>
+    {{/each}}
+    {{else}}
+    <h4>Нічого немає</h4>
+    {{/if}}

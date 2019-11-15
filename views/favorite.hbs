@@ -1,0 +1,28 @@
+<h2>Вподобане</h2>
+{{#if data.length}}
+    <div class="row">
+      {{#each data}}         
+          <div class="col s4 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="{{bookId.image}}">
+              </div>
+              <div class="card-content">
+                <span class="card-title">{{bookId.title}}</span>  
+                <p>{{bookId.price}}</p>
+              </div>
+              <div class="btnBooks"> 
+              <a href="/favorite/{{bookId._id}}" class="waves-effect waves-ligth btn">Детальніше</a>
+              <form action="/favorite/remove" method="post">
+                <input type="hidden" name="id" value="{{_id}}">
+                <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                <button class="btn red">Видалити</button>
+              </form>
+            </div>
+            </div>
+          </div>
+         {{/each}}          
+        </div>
+    {{else}}
+    <h4>Нічого немає</h4>
+    {{/if}}

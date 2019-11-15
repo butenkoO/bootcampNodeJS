@@ -1,0 +1,125 @@
+{{#if dataError}}
+  <p class="warning">{{dataError}}</p>
+{{/if}}
+<table>
+    <tr>
+        <td colspan="4"><h3>{{result.title}}</h3></td>
+    </tr>
+    <tr>
+        <td colspan="2"><h6>{{result.subtitle}}</h6></td>
+        <td colspan="2">
+          {{#if @root.isAuth}}
+          <form action="/favorite/add" method="post">
+              <input type="hidden" name="isbn13" value="{{result.isbn13}}">
+              <input type="hidden" name="author" value="{{client}}">
+              <input type="hidden" name="_csrf" value="{{csrf}}">
+              <button type="submit" class="waves-effect waves-ligth brown darken-3 btn">Додати в улюблене</button>
+          </form>
+          {{/if}}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" rowspan="4"><img src="{{result.image}}" alt="book img"></td>
+        <td>Автор</td>
+        <td><p>{{result.authors}}</p></td>
+    </tr>
+    <tr>
+        <td>Мова</td>
+        <td><p>{{result.language}}</p></td>
+    </tr>
+    <tr>
+        <td>Кількість сторінок</td>
+        <td><p>{{result.pages}}с.</p></td>
+    </tr>
+    <tr>
+        <td>Рік</td>
+        <td><p>{{result.year}}</p></td>
+    </tr>
+    <tr>
+        <td>
+          {{#if @root.isAuth}}
+          <form action="/func/like" method="post">
+            <input type="hidden" name="isbn13" value="{{result.isbn13}}">
+            <input type="hidden" name="author" value="{{client}}">
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+            <button type="submit" class="btn green darken-2">like</button>
+          </form>
+          {{/if}}
+        </td>
+        <td>
+          {{#if @root.isAuth}}
+          <form action="/func/dislike" method="post">
+            <input type="hidden" name="isbn13" value="{{result.isbn13}}">
+            <input type="hidden" name="author" value="{{client}}">
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+            <button type="submit" class="btn deep-orange accent-3">dislike</button>
+          </form>
+          {{/if}}
+        </td>
+        <td>Ціна</td>
+        <td><p>{{result.price}}</p></td>
+    </tr>
+    <tr>
+        <td colspan="4"><p>{{result.desc}}</p></td>
+    </tr>
+</table>
+{{#if @root.isAuth}}
+  <div class="row">
+    <form action="/func/addComment" method="POST" enctype="multipart/form-data" >
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="textarea" name="textarea" class="materialize-textarea"></textarea>
+          <label for="textarea">Коментар</label>
+          <input type="hidden" name="isbn13" value="{{result.isbn13}}">
+          <input type="hidden" name="author" value="{{client}}">
+          <input type="file" name="file">    
+          <input type="hidden" name="_csrf" value="{{csrf}}">      
+          <button type="submit" name="submit" class="btn">Відправити</button> 
+        </div>
+      </div>
+    </form>
+  </div>
+{{/if}}
+{{#if comments.length}}
+{{#each comments}}
+<table>
+    <thead>
+        <tr>
+            <th>{{author.name}}</th>
+            <th></th>
+            <th>{{time}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="3">{{commentMain}}</td>
+        </tr>
+        {{#if image}}
+        <tr>
+            <td colspan="3"><img src="{{data}}" height="200" alt="img comment"></td>
+        </tr>
+        {{/if}}
+        {{#if video}}
+        <tr>
+            <td colspan="3">
+              <video width="320" height="240" controls>
+                  <source src="{{data}}" type="video/mp4">
+              </video>
+            </td>
+        </tr>
+        {{/if}}
+        {{#if audio}}
+        <tr>
+            <td colspan="3">
+              <audio controls>
+                <source src="{{data}}" type="audio/mpeg">
+              </audio>
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table>
+{{/each}}
+{{else}}
+<p>Немає жодних коментарів</p>
+{{/if}}

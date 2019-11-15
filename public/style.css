@@ -1,0 +1,45 @@
+.nav-wrapper{
+    background-color: rgb(82, 78, 73);
+    padding: 0 2rem;
+}
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+    background-color: rgba(82, 78, 73, 0.3); 
+}
+.tabs .indicator {
+    background-color: #4b4b4b;
+}
+.tabs .tab a {
+    color: #4b4b4b;
+}
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #757575;
+}
+.auth{
+    padding-top: 1rem;
+}
+.btnBooks{
+    padding:1rem;
+    display: flex;
+    justify-content: space-between;
+}
+.warning{
+    border-radius: 7px;
+    background-color: rgba(201, 139, 139, 0.3);
+    color: #d14141;
+    text-align: center;
+    padding: 0.5rem 1rem;
+}
+th{
+    width: 33%;
+    background-color: rgba(170, 166, 166, 0.3);
+}
+td{
+    padding: 0;
+    width: 25%;
+}
+.card .card-content,.btnBooks{
+    padding: 10px;
+}
+.card-content{
+    height: 200px;
+}

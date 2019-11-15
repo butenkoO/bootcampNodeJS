@@ -1,0 +1,41 @@
+  <nav>
+    <div class="nav-wrapper">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        {{#if isMain}}
+        <li class="active"><a href="/">Головна</a></li>
+        {{else}}
+        <li><a href="/">Головна</a></li>
+        {{/if}}
+
+        {{#if isAuth}}
+          {{#if isFavorite}}
+            <li class="active"><a href="/favorite">Вподобане</a></li>
+            {{else}}
+            <li><a href="/favorite">Вподобане</a></li>
+            {{/if}}
+
+          {{#if isMyBook}}
+            <li class="active"><a href="/myBook">Мої книжки</a></li>
+            {{else}}
+            <li><a href="/myBook">Мої книжки</a></li>
+            {{/if}}
+            
+          {{#if isAddMyBook}}
+            <li class="active"><a href="/myBook/add">Додати книжку</a></li>
+            {{else}}
+            <li><a href="/myBook/add">Додати книжку</a></li>
+            {{/if}}
+
+            <li><a href="/auth/logout">Вихід</a></li>
+        {{else}}
+          {{#if isLogin}}
+
+          <li class="active"><a href="/auth/login">Авторизація</a></li>
+          {{else}}
+          
+          <li><a href="/auth/login">Авторизація</a></li>
+          {{/if}}
+        {{/if}}
+      </ul>
+    </div>
+  </nav>

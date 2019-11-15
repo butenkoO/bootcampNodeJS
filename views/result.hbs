@@ -1,0 +1,26 @@
+<h2>Результат пошуку</h2>
+    {{#if search.length}}
+      <div class="row">
+        {{#each search}}          
+          <div class="col s4 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="{{image}}">
+              </div>
+              <div class="card-content">
+                <span class="card-title">{{title}}</span>  
+                <p>{{subtitle}}</p>
+                <p>{{price}}</p>
+              </div>
+              <div class="btnBooks"> 
+              <a href="/books/{{isbn13}}" class="waves-effect waves-ligth btn">Детальніше</a>
+            </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    <p>{{page}}</p>
+    {{else}}
+    <h4>По результату пошуку нічого не знайдено</h4>
+    {{/if}}
+
