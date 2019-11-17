@@ -1,10 +1,11 @@
 const Favorite = require('../models/favorite')
 const User = require('../models/user')
-const Search = require('../models/search')
+const findAndSave = require('../helpers/addAndSave')
+
 
 const favoritePage = async (req,res)=>{
     try{
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user)
         .populate('items.bookId')
         .exec()
         const data = user.items
@@ -23,15 +24,8 @@ const favoritePage = async (req,res)=>{
 
 const addToFavorite = async (req,res)=>{
     try{
-        const result  = await Favorite.findOne({isbn13: req.body.isbn13})
-        let book = result
-        if(!result){
-            const data  = await Search.searchBook(req.body.isbn13)
-            const favorite = new Favorite(data) 
-            await favorite.save()
-            book = favorite  
-        }
-        const user = await User.findById(req.session.user._id)
+        const book = await findAndSave(req.body.isbn13)
+        const user = await User.findById(req.session.user)
         const cart = [...user.items]
         const index = cart.findIndex(el=> el.bookId.toString() == book._id)
         if( index >= 0){
@@ -58,8 +52,13 @@ const favoriteBookPage = async (req,res)=>{
         .populate('comments.author', 'name')
         .exec()
         const comments = result.comments
+        likeCount = result.likes.like.length
+        dislikeCount = result.likes.dislike.length
         res.render('fav-book',{
             title: result.title,
+            dislikeCount,
+            likeCount,
+            client: req.session.user.toString(),
             result,
             comments
         })
@@ -70,7 +69,7 @@ const favoriteBookPage = async (req,res)=>{
 
 const removeBookPage = async(req,res)=>{
     try{
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user)
         const cart = [...user.items]
         const index = cart.findIndex(el => el.bookId == req.body.id)
         cart.splice(index,1)

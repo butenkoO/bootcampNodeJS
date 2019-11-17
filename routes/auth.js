@@ -13,4 +13,15 @@ router.get('/logout',jwt,auth, authController.logOut)
 
 router.post('/register', registerValidators ,authController.registerAuth)
 
+router.get('/register/:token', registerValidators ,authController.registerToken)
+
+router.get('/reset', authController.resetPage)
+
+router.post('/reset', authController.reset)
+
+router.get('/password/:token', authController.newPasswordPage)
+
+router.post('/password', authController.newPassword)
+
+
 module.exports = router

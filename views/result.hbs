@@ -1,26 +1,44 @@
 <h2>Результат пошуку</h2>
-    {{#if search.length}}
-      <div class="row">
-        {{#each search}}          
-          <div class="col s4 m4">
-            <div class="card">
-              <div class="card-image">
-                <img src="{{image}}">
-              </div>
-              <div class="card-content">
-                <span class="card-title">{{title}}</span>  
-                <p>{{subtitle}}</p>
-                <p>{{price}}</p>
-              </div>
-              <div class="btnBooks"> 
-              <a href="/books/{{isbn13}}" class="waves-effect waves-ligth btn">Детальніше</a>
-            </div>
-            </div>
-          </div>
-        {{/each}}
+{{#if search.length}}
+<div class="row">
+  {{#each search}}
+  <div class="col s4 m4">
+    <div class="card">
+      <div class="card-image">
+        <img src="{{image}}">
       </div>
-    <p>{{page}}</p>
+      <div class="card-content">
+        <span class="card-title">{{title}}</span>
+        <p>{{subtitle}}</p>
+        <p>{{price}}</p>
+      </div>
+      <div class="btnBooks">
+        <a href="/books/{{isbn13}}" class="waves-effect waves-ligth btn">Детальніше</a>
+        <form action="/readlater/add" method="post">
+          <input type="hidden" name="isbn13" value="{{isbn13}}">
+          <input type="hidden" name="bookName" value="{{title}}">
+          <button type="submit" class="btn">На потім</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+<div class="pagination-div">
+  <ul class="pagination">
+    {{#ifeq page 1}}
     {{else}}
-    <h4>По результату пошуку нічого не знайдено</h4>
-    {{/if}}
-
+    <li class="waves-effect"><a href="/search?search={{ref}}&page={{back}}"><i class="material-icons">chevron_left</i></a></li>
+    <li class="waves-effect"><a href="/search?search={{ref}}&page={{back}}">{{back}}</a></li>
+    {{/ifeq}}
+    <li class="active grey darken-3"><a href="/search?search={{ref}}&page={{page}}">{{page}}</a></li>
+    {{#ifeq page pageCount}}
+    {{else}}
+    <li class="waves-effect"><a href="/search?search={{ref}}&page={{next}}">{{next}}</a></li>
+    <li class="waves-effect"><a href="/search?search={{ref}}&page={{next}}"><i class="material-icons">chevron_right</i></a></li>
+    {{/ifeq}}
+  </ul>
+</div>
+{{else}}
+<h4>По результату пошуку нічого не знайдено</h4>
+{{/if}}

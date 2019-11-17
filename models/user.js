@@ -1,10 +1,8 @@
 const {Schema, model } = require('mongoose')
 
 const user = new Schema({
-email:{
-    type: String,
-    required: true
-},
+temporaryAddress: String,
+email: String,
 password : {
     type: String,
     required: true
@@ -13,6 +11,10 @@ name : {
     type: String,
     required: true
 },
+registerToken: String,
+registerTokenExp: Date,
+resetToken: String,
+resetTokenExp: Date,
 items :[
         {
             bookId :{
@@ -22,6 +24,22 @@ items :[
             }
         }
     ],
+readLater: [
+    {
+        bookName:{
+            type: String,
+            required: true
+        },
+        isbn13: {
+            type: String,
+            required: true
+        },
+        done: {
+            type: Boolean,
+            required: true  
+        }
+    }
+],
 myBook: [
     {
         title: {
@@ -40,9 +58,7 @@ myBook: [
             type: String,
             required: true
         },
-        desc: {
-            type: String,
-        }
+        desc: String
     }
 ]
 

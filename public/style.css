@@ -5,7 +5,7 @@
 .tabs .tab a:focus, .tabs .tab a:focus.active {
     background-color: rgba(82, 78, 73, 0.3); 
 }
-.tabs .indicator {
+.tabs .indicator{
     background-color: #4b4b4b;
 }
 .tabs .tab a {
@@ -33,6 +33,9 @@ th{
     width: 33%;
     background-color: rgba(170, 166, 166, 0.3);
 }
+th button, td button{
+    padding-top: 7px;
+}
 td{
     padding: 0;
     width: 25%;
@@ -42,4 +45,11 @@ td{
 }
 .card-content{
     height: 200px;
+}
+.pagination-div{
+    display: flex;
+    justify-content: center;
+}
+#doneTask{
+    display: none;
 }

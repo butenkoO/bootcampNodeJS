@@ -1,5 +1,6 @@
 const Search = require('../models/search')
 const Favorite = require('../models/favorite')
+const User = require('../models/user')
 
 const mainPage = (req,res)=>{
     res.render('main',{title:'Головна', isMain: true})
@@ -13,7 +14,11 @@ const mainSearch = async (req,res)=>{
         res.render('result',{
             title:'Результат пошуку',
             search: search.books,
-            page: Math.ceil(search.total/10)
+            pageCount: Math.ceil(search.total/10),
+            page,
+            back: page-1,
+            next: +page+1,
+            ref: req.query.search
         })
     }catch(err){
         console.log({
@@ -28,8 +33,13 @@ const searchBook = async (req,res)=>{
         const book  = await Favorite.findOne({isbn13: req.params.id})
         .populate('comments.author', 'name')
         .exec()
-        let comments,client,result;
+        let comments,client,result,
+        likeCount = 0,
+        dislikeCount= 0,
+        done = false;
         if(book){
+            likeCount = book.likes.like.length
+            dislikeCount = book.likes.dislike.length
             comments = book.comments
             result = book
         }else{
@@ -37,14 +47,17 @@ const searchBook = async (req,res)=>{
             result = data
         }
         if(req.session.user){
-            client = req.session.user._id
-        } 
+            client = req.session.user.toString()
+        }
         res.render('book',{
             title: result.title,
+            likeCount,
+            dislikeCount,
             result,
+            done,
             client,
-            dataError: req.flash('dataError'),
-            comments
+            comments,
+            dataError: req.flash('dataError')
         })
     }catch(err){
         console.log({

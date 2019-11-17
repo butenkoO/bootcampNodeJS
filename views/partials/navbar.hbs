@@ -13,6 +13,12 @@
             {{else}}
             <li><a href="/favorite">Вподобане</a></li>
             {{/if}}
+                      
+          {{#if isreadLater}}
+            <li class="active"><a href="/readlater">Прочитати пізніше</a></li>
+            {{else}}
+            <li><a href="/readlater">Прочитати пізніше</a></li>
+            {{/if}}
 
           {{#if isMyBook}}
             <li class="active"><a href="/myBook">Мої книжки</a></li>

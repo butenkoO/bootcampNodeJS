@@ -14,4 +14,6 @@ router.post('/like',jwt,auth, funcController.like)
 
 router.post('/dislike',jwt,auth, funcController.dislike)
 
+router.post('/deleteComment',jwt,auth, funcController.deleteComment)
+
 module.exports = router

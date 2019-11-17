@@ -1,13 +1,10 @@
 const User = require('../models/user')
-const AWS = require('aws-sdk')
-const uuid = require('uuid')
-const ID = process.env.ID
-const SECRET = process.env.SECRET
-const BUCKET_NAME = process.env.BUCKET_NAME
+const uploadToS3 = require('../helpers/uploadToS3')
+
 
 const myBookPage =async (req,res)=>{
     try{
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user)
         const data = user.myBook
         res.render('myBooks',{
             title:'Мої книжки', 
@@ -30,23 +27,12 @@ const addMyBookPage =(req,res)=>{
 
 const addMyBook = async (req,res)=>{
     try{
-        const s3 = new AWS.S3({
-            accessKeyId: ID,
-            secretAccessKey: SECRET
-        })
-        const filename = uuid.v4()
-        const params = {
-            Bucket: BUCKET_NAME,
-            Key: filename,
-            Body: req.file.buffer,
-            ContentType: req.file.mimetype
-        }
-        const s3Response = await s3.upload(params).promise();
-        const user = await User.findById(req.session.user._id)
+        const filePath = await uploadToS3(req)
+        const user = await User.findById(req.session.user)
         const book = [...user.myBook]
         book.push({
             title:req.body.title,
-            image:s3Response.Location,
+            image:filePath,
             authors:req.body.authors,
             year:req.body.year,
             desc:req.body.desc
@@ -64,7 +50,7 @@ const addMyBook = async (req,res)=>{
 
 const editMyBookPage = async(req,res)=>{
     try{
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user)
         const book = [...user.myBook]
         const index = book.findIndex(el => el._id == req.params.id)
         res.render('editMyBook',{
@@ -80,25 +66,14 @@ const editMyBookPage = async(req,res)=>{
 
 const editMyBook =async (req,res)=>{
 try{
-    const s3 = new AWS.S3({
-        accessKeyId: ID,
-        secretAccessKey: SECRET
-    })
-    const filename = uuid.v4()
-    const params = {
-        Bucket: BUCKET_NAME,
-        Key: filename,
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype
-    }
-    const s3Response = await s3.upload(params).promise();
-    const user = await User.findById(req.session.user._id)
+    const filePath = await uploadToS3(req)
+    const user = await User.findById(req.session.user)
     const book = [...user.myBook]
     const index = book.findIndex(el => el._id == req.body.id)
     book.splice(index,1)
     book.push({
         title:req.body.title,
-        image:s3Response.Location,
+        image:filePath,
         authors:req.body.authors,
         year:req.body.year,
         desc:req.body.desc
@@ -116,7 +91,7 @@ try{
 
 const removeMyBook =async (req,res)=>{
     try{
-        const user = await User.findById(req.session.user._id)
+        const user = await User.findById(req.session.user)
         const book = [...user.myBook]
         const index = book.findIndex(el => el._id == req.body.id)
         book.splice(index,1)

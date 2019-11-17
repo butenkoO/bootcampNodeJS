@@ -6,7 +6,6 @@
         <td colspan="2"><h6>{{subtitle}}</h6></td>
         <td colspan="2">
             <form action="/favorite/remove" method="post">
-            <input type="hidden" name="_csrf" value="{{csrf}}">
                 <input type="hidden" name="id" value="{{_id}}">
                 <button class="btn red">Видалити</button>
             </form>
@@ -34,17 +33,17 @@
           <form action="/func/like" method="post">
             <input type="hidden" name="isbn13" value="{{result.isbn13}}">
             <input type="hidden" name="author" value="{{client}}">
-            <input type="hidden" name="_csrf" value="{{csrf}}">
             <button type="submit" class="btn green darken-2">like</button>
           </form>
+          <p>Вподобало: {{likeCount}}</p>
         </td>
         <td>
           <form action="/func/dislike" method="post">
             <input type="hidden" name="isbn13" value="{{result.isbn13}}">
             <input type="hidden" name="author" value="{{client}}">
-            <input type="hidden" name="_csrf" value="{{csrf}}">
             <button type="submit" class="btn deep-orange accent-3">dislike</button>
           </form>
+          <p>Не вподобало: {{dislikeCount}}</p>
         </td>
         <td>Ціна</td>
         <td><p>{{result.price}}</p></td>
@@ -53,17 +52,16 @@
         <td colspan="4"><p>{{result.desc}}</p></td>
     </tr>
 </table>
-    <div class="row">
-    <form class="col s12" action="/func/addComment" method="POST" enctype="multipart/form-data" >
+  <div class="row">
+    <form action="/func/addComment" method="POST" enctype="multipart/form-data" >
       <div class="row">
         <div class="input-field col s12">
           <textarea id="textarea" name="textarea" class="materialize-textarea"></textarea>
           <label for="textarea">Коментар</label>
           <input type="hidden" name="isbn13" value="{{result.isbn13}}">
           <input type="hidden" name="author" value="{{client}}">
-          <input type="file" name="file">   
-          <input type="hidden" name="_csrf" value="{{csrf}}">       
-          <button type="submit" name="submit" class="btn">Відправити</button>
+          <input type="file" name="file">         
+          <button type="submit" name="submit" class="btn">Відправити</button> 
         </div>
       </div>
     </form>
@@ -76,29 +74,44 @@
             <th>{{author.name}}</th>
             <th></th>
             <th>{{time}}</th>
+            {{#ifeq author._id @root.client}}
+            <th>
+              <form action="/func/deleteComment" method="post">
+                <input type="hidden" name="id" value="{{_id}}">
+                <input type="hidden" name="bookid" value="{{@root.result._id}}">
+                <button type="submit"><i class="Medium material-icons">close</i></button>
+              </form>  
+            </th>
+            {{/ifeq}}
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan="3">{{commentMain}}</td>
+            <td colspan="4">{{commentMain}}</td>
         </tr>
+        {{#if image}}
         <tr>
-            <td colspan="3"><img src="{{data}}" height="200" alt="img comment"></td>
+            <td colspan="4"><img src="{{data}}" height="200" alt="img comment"></td>
         </tr>
+        {{/if}}
+        {{#if video}}
         <tr>
-            <td colspan="3">
+            <td colspan="4">
               <video width="320" height="240" controls>
                   <source src="{{data}}" type="video/mp4">
               </video>
             </td>
         </tr>
+        {{/if}}
+        {{#if audio}}
         <tr>
-            <td colspan="3">
+            <td colspan="4">
               <audio controls>
                 <source src="{{data}}" type="audio/mpeg">
               </audio>
             </td>
         </tr>
+        {{/if}}
     </tbody>
 </table>
 {{/each}}

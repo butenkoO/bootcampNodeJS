@@ -14,7 +14,8 @@ const authRouter = require('./routes/auth')
 const functionalRouter = require('./routes/socialFunctional')
 const yamlRouter = require('./routes/yaml')
 const myBookRouter = require('./routes/myBook')
-
+const readLaterRouter = require('./routes/readLater')
+ 
 const app = express()
 
 const store = new MongoStore({
@@ -24,9 +25,9 @@ const store = new MongoStore({
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
-    extname: 'hbs'
+    extname: 'hbs',
+    helpers: require('./helpers/hbs')
 })
-
 app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 
@@ -48,6 +49,7 @@ app.use('/favorite', favoriteRouter)
 app.use('/func', functionalRouter)
 app.use('/yaml', yamlRouter)
 app.use('/mybook', myBookRouter)
+app.use('/readlater', readLaterRouter)
 
 async function start(){
     await mongoose.connect(process.env.MONGODB_URL, { 
@@ -59,10 +61,3 @@ async function start(){
     })
 }
 start()
-
-app.use((err,req,res,next)=>{
-    return res.status(500).json({
-        error: true,
-        message: err.message
-    })
-})
