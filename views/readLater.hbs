@@ -1,0 +1,39 @@
+<h1>Що почитати?</h1>
+{{#if data.length}}
+<table>
+    <thead>
+        <tr>
+            <th>Прочитано</th>
+            <th>Назва книги</th>
+            <th>Видалити</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        <tr>
+            <td>
+                <form action="/readlater/check" method="post">
+                    {{#if done}}
+                        <label for="doneTask"><i class="medium material-icons" type="submit">check</i></label>
+                        <button id="doneTask" type="submit"></button>
+                    {{else}}
+                        <label for="doneTask"><i class="medium material-icons" type="submit">bookmark</i></label>
+                        <button id="doneTask" type="submit"></button>
+                    {{/if}}
+                    <input type="hidden" name="task" value="{{bookName}}">
+                </form>
+            </td>
+            <td><a href="/books/{{isbn13}}">{{bookName}}</a></td>
+            <td>
+              <form action="/readlater/remove" method="post">
+                <input type="hidden" name="id" value="{{_id}}">
+                <button type="submit"><i class="Medium material-icons">close</i></button>
+              </form>  
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<h5>В переліку нічого немає</h5>
+{{/if}}
