@@ -6,7 +6,7 @@ const moment = require('moment')
 
 
 const addComment =async(req,res)=>{
-    // try{
+    try{
         let filePath,image,audio,video;
         if(req.file){
             if(!req.file.mimetype.match('image.*|audio.*|video.*')){
@@ -37,12 +37,12 @@ const addComment =async(req,res)=>{
         book.comments = commentCart
         await book.save()
         res.redirect(req.headers.referer)
-    // }catch(err){
-    //     console.log({
-    //         err: true,
-    //         message: 'Не вдалось добавити коментар'
-    //     })
-    // }
+    }catch(err){
+        console.log({
+            err: true,
+            message: 'Не вдалось добавити коментар'
+        })
+    }
 }
 
 const like = async (req,res)=>{

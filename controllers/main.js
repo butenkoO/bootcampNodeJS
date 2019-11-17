@@ -1,6 +1,5 @@
 const Search = require('../models/search')
 const Favorite = require('../models/favorite')
-const User = require('../models/user')
 
 const mainPage = (req,res)=>{
     res.render('main',{title:'Головна', isMain: true})
@@ -47,7 +46,7 @@ const searchBook = async (req,res)=>{
             result = data
         }
         if(req.session.user){
-            client = req.session.user.toString()
+            client = req.session.user
         }
         res.render('book',{
             title: result.title,

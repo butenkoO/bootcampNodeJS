@@ -29,7 +29,7 @@ const addToFavorite = async (req,res)=>{
         const cart = [...user.items]
         const index = cart.findIndex(el=> el.bookId.toString() == book._id)
         if( index >= 0){
-            res.redirect('/favorite')
+            res.redirect(req.headers.referer)
         }else{
             cart.push({
                 bookId: book._id

@@ -22,7 +22,7 @@ const readLaterAdd =async(req,res)=>{
     const tasks = [...user.readLater]
     const index = tasks.findIndex(el=> el.isbn13.toString() == req.body.isbn13)
     if( index >= 0){
-        res.redirect('/favorite')
+        res.redirect(req.headers.referer)
     }else{
         tasks.push({
             bookName: req.body.bookName,
@@ -53,23 +53,9 @@ const readLaterRemove = async (req,res)=>{
     }  
 }
 
-const readLaterCheck = async (req,res)=>{
-    console.log(req.body)
-    const user = await User.findById(req.session.user)
-    const tasks = [...user.readLater]
-    const index = tasks.findIndex(el => el._id.toString() == req.body.task)
-    if( index >= 0){
-        tasks[index].done = !tasks[index].done
-        await user.save()
-        res.redirect('/readlater') 
-    }else{
-        res.redirect('/readlater')
-    } 
-}
 
 module.exports = {
     readLaterPage,
     readLaterAdd,
-    readLaterCheck,
     readLaterRemove
 }

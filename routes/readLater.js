@@ -9,6 +9,5 @@ router.post('/add', readLaterController.readLaterAdd)
 
 router.post('/remove', readLaterController.readLaterRemove)
 
-router.post('/check', readLaterController.readLaterCheck)
 
 module.exports = router

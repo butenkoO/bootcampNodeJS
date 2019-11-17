@@ -7,14 +7,22 @@
     </tr>
     <tr>
         <td colspan="2"><h6>{{result.subtitle}}</h6></td>
-        <td colspan="2">
+        <td>
           {{#if @root.isAuth}}
           <form action="/favorite/add" method="post">
               <input type="hidden" name="isbn13" value="{{result.isbn13}}">
               <input type="hidden" name="author" value="{{client}}">
-              <input type="hidden" name="_csrf" value="{{csrf}}">
               <button type="submit" class="waves-effect waves-ligth brown darken-3 btn">Додати в улюблене</button>
           </form>
+          {{/if}}
+        </td>
+        <td>
+          {{#if @root.isAuth}}
+        <form action="/readlater/add" method="post">
+          <input type="hidden" name="isbn13" value="{{result.isbn13}}">
+          <input type="hidden" name="bookName" value="{{result.title}}">
+          <button type="submit" class="btn">На потім</button>
+        </form>
           {{/if}}
         </td>
     </tr>
