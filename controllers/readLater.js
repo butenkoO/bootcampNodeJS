@@ -54,6 +54,7 @@ const readLaterRemove = async (req,res)=>{
 }
 
 const readLaterCheck = async (req,res)=>{
+    console.log(req.body)
     const user = await User.findById(req.session.user)
     const tasks = [...user.readLater]
     const index = tasks.findIndex(el => el._id.toString() == req.body.task)
