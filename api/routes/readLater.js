@@ -4,7 +4,6 @@ const readLaterController = require('../controllers/readLater')
 const auth = require('../middleware/auth')
 const jwt = require('../middleware/token')
 
-
 router.get('/',auth,jwt, readLaterController.readLaterPage)
 
 router.post('/add',auth,jwt, readLaterController.readLaterAdd)

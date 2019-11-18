@@ -19,6 +19,7 @@ const functionalRouter = require('./routes/socialFunctional');
 const yamlRouter = require('./routes/yaml');
 const myBookRouter = require('./routes/myBook');
 const readLaterRouter = require('./routes/readLater');
+const apiRouter = require('./api/routes/index')
  
 const app = express()
 
@@ -56,6 +57,7 @@ app.use('/func', functionalRouter);
 app.use('/yaml', yamlRouter);
 app.use('/mybook', myBookRouter);
 app.use('/readlater', readLaterRouter);
+app.use('/api', apiRouter);
 
 app.use(errorHandler);
 

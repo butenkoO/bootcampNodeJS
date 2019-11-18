@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 const User = require('../models/user')
 
 exports.registerValidators = [
@@ -7,7 +7,8 @@ exports.registerValidators = [
      .isLength({min: 3})
      .withMessage('Імя повинно містити мінімум 3 символи'),
     check('email')
-     .isEmail().withMessage('Некоректний Email')
+     .isEmail()
+     .withMessage('Некоректний Email')
      .trim()
      .custom(async(value, {req})=>{
         try{
@@ -67,17 +68,9 @@ exports.newPassValidators = [
      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,30}$/, "i")
 ]
 
-exports.bookValidators = [
-    check('title')
+exports.searchValidators = [
+    check('search')
      .trim()
-     .isLength({min: 3})
-     .withMessage('Імя книги повинно містити мінімум 3 символи'),
-     check('authors')
-     .trim()
-     .isLength({min: 3})
-     .withMessage('Імя автора повинно містити мінімум 3 символи'),
-     check('year')
-     .trim()
-     .isLength({min: 4})
-     .withMessage('Некоректна дата')
+     .isAlphanumeric()
+     .withMessage('Запит повиннен містити мінімум 3 символи та латинські букви')
 ]

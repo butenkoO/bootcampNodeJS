@@ -3,25 +3,26 @@ const router = Router()
 const authController = require('../controllers/auth')
 const {registerValidators,loginValidators,resetValidators,newPassValidators} = require('../middleware/validator')
 const auth = require('../middleware/auth')
+const nonauth = require('../middleware/nonAuth')
 const jwt = require('../middleware/token')
 
-router.get('/login',authController.loginPage)
+router.get('/login',nonauth,authController.loginPage)
 
-router.post('/login',loginValidators, authController.loginAuth)
+router.post('/login',nonauth,loginValidators, authController.loginAuth)
 
 router.get('/logout',jwt,auth, authController.logOut)
 
-router.post('/register', registerValidators ,authController.registerAuth)
+router.post('/register',nonauth, registerValidators ,authController.registerAuth)
 
-router.get('/register/:token', registerValidators ,authController.registerToken)
+router.get('/register/:token',nonauth, registerValidators ,authController.registerToken)
 
-router.get('/reset', authController.resetPage)
+router.get('/reset',nonauth, authController.resetPage)
 
-router.post('/reset',resetValidators, authController.reset)
+router.post('/reset',nonauth,resetValidators, authController.reset)
 
-router.get('/password/:token', authController.newPasswordPage)
+router.get('/password/:token',nonauth, authController.newPasswordPage)
 
-router.post('/password',newPassValidators, authController.newPassword)
+router.post('/password',nonauth, newPassValidators, authController.newPassword)
 
 
 module.exports = router

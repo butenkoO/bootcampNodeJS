@@ -33,10 +33,6 @@ readLater: [
         isbn13: {
             type: String,
             required: true
-        },
-        done: {
-            type: Boolean,
-            required: true  
         }
     }
 ],

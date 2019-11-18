@@ -3,7 +3,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const { check, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer')
 const sendgrid = require('nodemailer-sendgrid-transport')
 const regEmail = require('../email/registration')
@@ -131,7 +131,12 @@ const resetPage = (req,res)=>{
 }
 
 const reset = (req,res)=>{
-    try{
+    try{        
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('resetError', errors.array()[0].msg)
+            return res.redirect('/auth/reset') 
+        }
         crypto.randomBytes(25,async (err, buffer)=>{
             if(err){
                 res.flash('resetError','Щось пішло не так...')
@@ -161,7 +166,12 @@ const reset = (req,res)=>{
 
 const newPassword =async (req,res)=>{
     try{
-        const user =await User.findOne({
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg)
+            return res.redirect(req.headers.referer)
+        }
+        const user = await User.findOne({
             _id: req.body.userId,
             resetToken: req.body.token,
             resetTokenExp: {$gt: Date.now()}

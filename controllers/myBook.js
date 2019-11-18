@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const uploadToS3 = require('../helpers/uploadToS3')
+const { validationResult } = require('express-validator');
 
 
 const myBookPage = async(req,res)=>{
@@ -22,7 +23,8 @@ const myBookPage = async(req,res)=>{
 const addMyBookPage = (req,res)=>{
     res.render('addMyBook',{
         title:'Додати книжку',
-        isAddMyBook:true})
+        isAddMyBook:true
+    })
 }
 
 const addMyBook = async(req,res)=>{
@@ -54,7 +56,8 @@ const editMyBookPage = async(req,res)=>{
         const book = [...user.myBook]
         const index = book.findIndex(el => el._id == req.params.id)
         res.render('editMyBook',{
-            data: book[index]
+            data: book[index],
+            editBookError: req.flash('editBookError')
         })
     }catch(err){
         console.log({
@@ -66,6 +69,11 @@ const editMyBookPage = async(req,res)=>{
 
 const editMyBook = async(req,res)=>{
     try{
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('editBookError', errors.array()[0].msg)
+            return res.redirect('/auth/login#login') 
+        }
         const filePath = await uploadToS3(req)
         const user = await User.findById(req.session.user)
         const book = [...user.myBook]

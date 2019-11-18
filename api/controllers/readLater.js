@@ -1,16 +1,14 @@
-const User = require('../models/user')
+const User = require('../../models/user')
 
 const readLaterPage = async(req,res)=>{
     try{
         const user = await User.findById(req.session.user)
         const data = user.readLater
-        res.render('readLater',{
-            title:'Прочитати пізніше', 
-            isreadLater: true,
+        res.status(200).json({
             data
         })
     }catch(err){
-        console.log({
+        res.json({
             err: true,
             message: 'Не вдалось відобразити сторінку'
         })
@@ -22,7 +20,9 @@ const readLaterAdd =async(req,res)=>{
     const tasks = [...user.readLater]
     const index = tasks.findIndex(el=> el.isbn13.toString() == req.body.isbn13)
     if( index >= 0){
-        res.redirect(req.headers.referer)
+        res.status(403).json({
+            message: 'Книжка вже в списку'
+        })
     }else{
         tasks.push({
             bookName: req.body.bookName,
@@ -30,7 +30,9 @@ const readLaterAdd =async(req,res)=>{
         })
         user.readLater = tasks
         await user.save()
-        res.redirect(req.headers.referer)  
+        res.status(200).json({
+            message: 'Книжка успішно додана до списку'
+        }) 
     }
 
 }
@@ -43,9 +45,11 @@ const readLaterRemove = async (req,res)=>{
         tasks.splice(index,1)
         user.readLater = tasks
         await user.save()
-        res.redirect('/readlater')  
+        res.status(200).json({
+            message: 'Книжка успішно видалена з списку'
+        }) 
     }catch(err){
-        console.log({
+        res.json({
             err: true,
             message: 'Не вдалось видалити елемент'
         })

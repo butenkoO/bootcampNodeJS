@@ -1,15 +1,33 @@
 const Search = require('../models/search')
 const Favorite = require('../models/favorite')
+const { validationResult } = require('express-validator');
 
 const mainPage = (req,res)=>{
-    res.render('main',{title:'Головна', isMain: true})
+    res.render('main',{
+        title:'Головна',
+        isMain: true,
+        searchError: req.flash('searchError')
+    })
 }
 
 const mainSearch = async (req,res)=>{
     try{
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('searchError', errors.array()[0].msg)
+            return res.redirect('/') 
+        }
         const find = req.query.search
         const page = req.query.page || '1'
         const search  = await Search.searchResult(find, page)
+        if(search.books.length){
+                   if(page<1){
+           return res.redirect(`/search?search=${req.query.search}&page=1`)
+        }
+        if(page>Math.ceil(search.total/10)){
+            return res.redirect(`/search?search=${req.query.search}&page=${Math.ceil(search.total/10)}`)
+         } 
+        }
         res.render('result',{
             title:'Результат пошуку',
             search: search.books,
@@ -46,7 +64,7 @@ const searchBook = async (req,res)=>{
             result = data
         }
         if(req.session.user){
-            client = req.session.user
+            client = req.session.user.toString()
         }
         res.render('book',{
             title: result.title,

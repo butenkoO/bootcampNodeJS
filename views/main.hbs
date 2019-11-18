@@ -1,4 +1,7 @@
       <h1>Пошук книги</h1>
+        {{#if searchError}}
+        <p class="warning">{{searchError}}</p>
+        {{/if}}
       <form action="/search" method="get">
           <div class="input-field">
               <input type="search" id="search" name="search" class="materialize-textarea" required></input>

@@ -5,7 +5,7 @@
         <tr>
             <th></th>
             <th>Назва книги</th>
-            <th>Видалити</th>
+            <th class="del">Видалити</th>
         </tr>
     </thead>
     <tbody>
@@ -13,7 +13,7 @@
         <tr>
             <td><i class="medium material-icons">bookmark</i></td>
             <td><a href="/books/{{isbn13}}">{{bookName}}</a></td>
-            <td>
+            <td class="del">
               <form action="/readlater/remove" method="post">
                 <input type="hidden" name="id" value="{{_id}}">
                 <button type="submit"><i class="Medium material-icons">close</i></button>
